@@ -1,0 +1,47 @@
+{
+  "points": [
+    {
+      "id": 1,
+      "image": "https://www.udf.edu.br/wp-content/uploads/2020/05/486x346.jpg",
+      "name": "UDF",
+      "email": "udf.edu@gmail.com",
+      "whatsapp": "61991234567",
+      "city": "Brasília",
+      "uf": "DF",
+      "latitude": -15.79790738541224,
+      "longitude": -47.898740718522916
+    },
+    {
+      "image": "https://www.udf.edu.br/wp-content/uploads/2020/05/486x346.jpg",
+      "name": "Carrefour",
+      "email": "udf.edu@gmail.com",
+      "whatsapp": "61991234567",
+      "city": "Brasília",
+      "uf": "DF",
+      "latitude": -15.79790738541224,
+      "longitude": -47.898740718522916,
+      "id": 2
+    },
+    {
+      "image": "https://www.udf.edu.br/wp-content/uploads/2020/05/486x346.jpg",
+      "name": "Tanto faz",
+      "email": "udf.edu@gmail.com",
+      "whatsapp": "61991234567",
+      "city": "Brasília",
+      "uf": "DF",
+      "latitude": -15.79790738541224,
+      "longitude": -47.898740718522916,
+      "id": 3
+    }
+  ],
+  "items": [
+    {
+      "image": "https://s12.aconvert.com/convert/p3r68-cdx67/ajyhq-a0lcr.png",
+	    "title": "Herói"
+    },
+    {
+      "image": "https://cdn-icons-png.flaticon.com/128/3518/3518513.png",
+	    "title": "Latas de Alumínio"
+    }
+  ]
+}
