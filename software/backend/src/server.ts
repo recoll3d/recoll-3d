@@ -1,68 +1,37 @@
-import express from 'express';
-import cors from 'cors'
-import multer from 'multer';
-import multerConfig from './config/multer';
-import path from 'path';
-import fs from 'fs';
-import db from './database/database.json';
+import 'dotenv/config';
+import 'express-async-errors';
 
-interface Database {
-  profiles: Array<{
-    id?: number,
-    name: string,
-    description: string,
-    image?: string
-  }>;
-}
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import path from 'path';
+
+import { routes } from './routes';
 
 const app = express();
 
 app.use(cors());
+
 app.use(express.json());
-app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 
-const database: Database = db;
-const upload = multer(multerConfig);
+app.use(routes);
 
-app.post("/profiles", upload.single("image"), (request, response) => {
-  const { name, description } = request.body;
+app.use('/uploads/', express.static(path.resolve(__dirname, 'uploads')));
 
-  const databaseDirectory = path.join(__dirname, "database");
-
-  if (!fs.existsSync(databaseDirectory)) {
-    fs.mkdirSync(databaseDirectory);
-  };
-
-  const profile = {
-    id: database.profiles.length + 1,
-    name,
-    description,
-    image: request.file?.filename,
-  };
-
-  database.profiles.push(profile);
-
-
-  fs.writeFileSync(path.join(databaseDirectory, "database.json"), JSON.stringify(database, null, 2));
-  return response.status(201).json(profile);
-  // response.json(newItem);
-})
-
-app.get("/profiles", (request, response) => {
-  const { profiles } = database;
-
-  const serializedProfiles = profiles.map(profile => {
-    return {
-      id: profile.id,
-      name: profile.name,
-      description: profile.description,
-      image_url: `http://localhost:3333/uploads/${profile.image}`,
+app.use(
+  (err: Error, request: Request, response: Response, next: NextFunction) => {
+    if (err instanceof Error) {
+      return response.status(400).json({
+        message: err.message,
+      });
     }
-  })
 
-  response.json(serializedProfiles);
-});
+    return response.status(500).json({
+      status: "error",
+      message: "Internal server error",
+    });
+  }
+)
 
-app.listen(3333, () => {
+app.listen(3000, () => {
   console.log('Server is running');
 });

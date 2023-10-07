@@ -218,5 +218,6 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "workbench.editor.empty.hint": "hidden"
 }

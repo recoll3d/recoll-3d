@@ -28,7 +28,7 @@ model Profile {
   name        String @unique
   description String
   image       String
-  user        User[]
+  users       User[]
 
   @@map("profiles")
 }
