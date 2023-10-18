@@ -3,7 +3,7 @@
     "javascript": "jsx"
   },
   "workbench.startupEditor": "newUntitledFile",
-  "editor.fontSize": 14,
+  "editor.fontSize": 15,
   "javascript.suggest.autoImports": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.rulers": [
@@ -105,7 +105,7 @@
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1"
   },
-  "workbench.editor.labelFormat": "short",
+  "workbench.editor.labelFormat": "default",
   "editor.fontLigatures": true,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
@@ -167,9 +167,9 @@
   "git.enableSmartCommit": true,
   "editor.accessibilitySupport": "off",
   "explorer.confirmDragAndDrop": false,
-  "terminal.integrated.fontSize": 14,
-  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
-  // "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontSize": 13,
+  // "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontFamily": "monospace",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.addMissingImports": true
@@ -181,8 +181,9 @@
   ],
   "editor.semanticHighlighting.enabled": false,
   "breadcrumbs.enabled": true,
-  "workbench.productIconTheme": "fluent-icons",
-  "editor.fontFamily": "Fira Code",
+  "workbench.productIconTheme": "Default",
+  "editor.fontFamily": "Fira Code Retina",
+  // "editor.fontWeight": "300",
   "gitlens.codeLens.authors.enabled": false,
   "editor.tabSize": 2,
   "security.workspace.trust.untrustedFiles": "newWindow",
@@ -207,17 +208,49 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "workbench.editor.untitled.hint": "hidden",
-  "workbench.colorTheme": "Omni",
+  // "workbench.colorTheme": "Omni",
   "liveServer.settings.donotShowInfoMsg": true,
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "window.commandCenter": true,
   "git.openRepositoryInParentFolders": "always",
-  "window.zoomLevel": 0.5,
+  "window.zoomLevel": 1,
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
   "editor.formatOnSave": true,
-  "workbench.editor.empty.hint": "hidden"
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.preferredHighContrastLightColorTheme": "Default Dark+",
+  "workbench.preferredLightColorTheme": "Default High Contrast",
+  "workbench.colorCustomizations": {
+    // Editor ativo:
+    // "editor.background": "#090909",
+    "editor.background": "#05050a",
+    // Definir o fundo da barra de status:
+    "statusBar.background": "#06070e",
+    // Alterar a cor de fundo da barra lateral (sidebar)
+    "activityBar.background": "#06070e",
+    // Barra de Título:
+    "titleBar.activeBackground": "#05050a",
+    "titleBar.inactiveBackground": "#222222",
+    // Barra de Guia (Tab):
+    // "tab.activeBackground": "#191919",
+    "tab.inactiveBackground": "#29313b",
+    // "tab.border": "#555555"
+    // Editor de Abas:
+    // "editorGroup.background": "#222222",
+    // "editorGroup.border": "#444444",
+    // Linha Atual (Current Line):
+    // "editor.lineHighlightBackground": "#333333"
+    // Borda da Seleção:
+    // "editor.selectionHighlightBorder": "#FF0000"
+    // Painel Integrado (Integrated Terminal):
+    "terminal.background": "#06070e",
+    // Gutter (Margem Lateral com Números de Linhas):
+    "editorGutter.background": "#06070e",
+    "editorGutter.commentRangeForeground": "#CCCCCC",
+    // Alterar a cor de fundo da Barra Lateral:
+    "sideBar.background": "#05050a"
+  },
 }

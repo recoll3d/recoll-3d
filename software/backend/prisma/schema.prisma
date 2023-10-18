@@ -10,25 +10,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id         String   @id @default(uuid())
-  name       String
-  username   String   @unique
-  email      String   @unique
-  password   String
-  profile_id String
-  profile    Profile  @relation(fields: [profile_id], references: [id])
-  created_at DateTime @default(now())
+model Users {
+  id             String          @id @default(uuid())
+  profile_id     String
+  profile        Profiles        @relation(fields: [profile_id], references: [id])
+  name           String
+  username       String          @unique
+  email          String          @unique
+  password       String
+  created_at     DateTime        @default(now())
+  invalid_tokens InvalidTokens[]
+  reset_token    ResetTokens?
 
   @@map("users")
 }
 
-model Profile {
-  id          String @id @default(uuid())
-  name        String @unique
+model Profiles {
+  id          String   @id @default(uuid())
+  name        String   @unique
   description String
   image       String
-  users       User[]
+  created_at  DateTime @default(now())
+  users       Users[]
 
   @@map("profiles")
+}
+
+model InvalidTokens {
+  id             Int      @id @default(autoincrement())
+  user_id        String
+  user           Users    @relation(fields: [user_id], references: [id])
+  token          String   @unique
+  invalidated_at DateTime @default(now())
+
+  @@map("invalid_tokens")
+}
+
+model ResetTokens {
+  id         Int      @id @default(autoincrement())
+  user_id    String   @unique
+  user       Users    @relation(fields: [user_id], references: [id])
+  token      String
+  expires_at DateTime
+
+  @@map("reset_tokens")
 }

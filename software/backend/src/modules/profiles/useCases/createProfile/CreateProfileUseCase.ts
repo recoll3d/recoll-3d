@@ -9,19 +9,17 @@ interface ICreateProfile {
 export class CreateProfileUseCase {
   async execute({ name, description, image }: ICreateProfile) {
 
-    // const profileExist = await prisma.profile.findFirst({
-    //   where: {
-    //     name: {
-    //       mode: "insensitive",
-    //     },
-    //   },
-    // });
+    const profileExist = await prisma.profiles.findFirst({
+      where: {
+        name,
+      },
+    });
 
-    // if (profileExist) {
-    //   throw new Error("Profile already exists");
-    // }
+    if (profileExist) {
+      throw new Error("Profile already exists");
+    }
 
-    const profile = await prisma.profile.create({
+    const profile = await prisma.profiles.create({
       data: {
         name,
         description,

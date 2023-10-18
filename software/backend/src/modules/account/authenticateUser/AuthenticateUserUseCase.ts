@@ -13,12 +13,14 @@ export class AuthenticateUserUseCase {
   async execute({ username, email, password }: IAuthenticateUser) {
     // Receber username, email e password
 
-    // Verificar se username e email cadastrado
-    const user = await prisma.user.findFirst({
+    // Verificar se username ou email cadastrado
+    const user = await prisma.users.findFirst({
       where: {
-        username,
-        email,
-      }
+        OR: [
+          { username },
+          { email },
+        ],
+      },
     });
 
     if (!user) {
@@ -32,8 +34,22 @@ export class AuthenticateUserUseCase {
       throw new Error("Invalid access credentials!");
     }
 
+    const invalidTokens = await prisma.invalidTokens.findFirst({
+      where: {
+        user_id: user.id
+      }
+    });
+
+    if (invalidTokens) {
+      await prisma.invalidTokens.deleteMany({
+        where: {
+          user_id: user.id,
+        }
+      });
+    }
+
     // Gerar token
-    const token = sign({ email }, env.MD5_HASH as string, {
+    const token = sign({ email }, env.USER_MD5_HASH as string, {
       subject: user.id,
       expiresIn: "1d",
     });
