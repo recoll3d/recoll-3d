@@ -1,15 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `token_blacklist` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "token_blacklist" DROP CONSTRAINT "token_blacklist_user_id_fkey";
-
--- DropTable
-DROP TABLE "token_blacklist";
-
 -- CreateTable
 CREATE TABLE "invalid_tokens" (
     "id" SERIAL NOT NULL,

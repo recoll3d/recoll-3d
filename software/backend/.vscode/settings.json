@@ -207,7 +207,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "workbench.editor.untitled.hint": "hidden",
   // "workbench.colorTheme": "Omni",
   "liveServer.settings.donotShowInfoMsg": true,
   "[json]": {
@@ -253,4 +252,5 @@
     // Alterar a cor de fundo da Barra Lateral:
     "sideBar.background": "#05050a"
   },
+  "typescript.tsdk": "node_modules/typescript/lib",
 }
