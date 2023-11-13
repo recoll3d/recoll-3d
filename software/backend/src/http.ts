@@ -2,13 +2,13 @@ import 'dotenv/config';
 import 'express-async-errors';
 
 import express, { Request, Response, NextFunction } from 'express';
-// import { Server } from 'socket.io';
-import { Socket } from './websockets';
 import http from 'http';
 import cors from 'cors';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 
 import { routes } from './routes';
+import { Socket } from './websockets';
 
 const app = express();
 
@@ -16,11 +16,13 @@ const serverHttp = http.createServer(app);
 
 const socket = new Socket();
 
-socket.connect(serverHttp);
+const io = socket.connect(serverHttp);
 
 // const io = new Server(serverHttp);
 
 app.use(cors());
+
+app.use(cookieParser());
 
 app.use(express.json());
 
@@ -46,5 +48,5 @@ app.use(
 export {
   serverHttp,
   socket,
-  // io 
+  io
 };

@@ -3,6 +3,7 @@ import { prisma } from '../../../../database/prismaClient';
 interface ICreateProfile {
   name: string;
   description: string;
+  // images: any;
   image: string;
 }
 
@@ -11,7 +12,10 @@ export class CreateProfileUseCase {
 
     const profileExist = await prisma.profiles.findFirst({
       where: {
-        name,
+        name: {
+          equals: name,
+          mode: "insensitive",
+        },
       },
     });
 
@@ -24,8 +28,16 @@ export class CreateProfileUseCase {
         name,
         description,
         image,
+        // image: images["profile_image"].map((file: any) => file.filename),
       }
     });
+
+    // const data = {
+    //   name,
+    //   description,
+    //   profile_image: images["profile_image"].map((file: any) => file.filename),
+    //   level_image: images["level_image"].map((file: any) => file.filename),
+    // }
 
     return profile;
   }

@@ -10,6 +10,7 @@ export class CreateProfileController {
       name,
       description,
       image: request.file?.filename as string,
+      // images: request.files,
     });
 
     return response.json(result);

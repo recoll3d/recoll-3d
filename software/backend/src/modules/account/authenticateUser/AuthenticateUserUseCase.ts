@@ -2,6 +2,7 @@ import { prisma } from '../../../database/prismaClient';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { env } from 'process';
+import { Response } from 'express';
 
 interface IAuthenticateUser {
   username: string;

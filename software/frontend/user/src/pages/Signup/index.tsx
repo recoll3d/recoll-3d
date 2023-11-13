@@ -1,11 +1,11 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import api from '../../services/api';
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
+import api from "../../services/api";
 
-import './styles.css';
+import "./styles.css";
 
-import logo from '../../assets/logo.svg';
+import logo from "../../assets/logo.svg";
 
 // array ou objeto: manualmente informar o tipo da variavel
 
@@ -20,9 +20,9 @@ const Signup = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    whatsapp: '',
+    name: "",
+    email: "",
+    whatsapp: "",
   });
 
   const [selectedProfiles, setSelectedProfiles] = useState<number[]>([]);
@@ -30,7 +30,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get('/profiles').then(response => {
+    api.get("/profiles").then((response) => {
       setProfiles(response.data);
     });
   }, []);
@@ -42,14 +42,18 @@ const Signup = () => {
   }
 
   function handleSelectProfile(id: number) {
-    const alreadySelected = selectedProfiles.findIndex(profile => profile === id);
+    const alreadySelected = selectedProfiles.findIndex(
+      (profile) => profile === id
+    );
 
     if (alreadySelected >= 0) {
-      const filteredProfiles = selectedProfiles.filter(profile => profile !== id);
+      const filteredProfiles = selectedProfiles.filter(
+        (profile) => profile !== id
+      );
 
       setSelectedProfiles(filteredProfiles);
     } else {
-      setSelectedProfiles([ id ]);
+      setSelectedProfiles([id]);
     }
   }
 
@@ -70,12 +74,12 @@ const Signup = () => {
       name,
       email,
       whatsapp,
-      profile: profiles.join(''),
-    }
+      profile: profiles.join(""),
+    };
 
     // await api.post('user', data);
-    console.log(data)
-    alert('Ponto de coleta criado!');
+    console.log(data);
+    alert("Ponto de coleta criado!");
 
     // navigate('/');
   }
@@ -92,7 +96,6 @@ const Signup = () => {
       </header>
 
       <form onSubmit={handleSubmit}>
-
         <fieldset>
           <header role="legend">
             <h2>Seus Dados</h2>
@@ -100,7 +103,7 @@ const Signup = () => {
 
           <div className="field">
             <label htmlFor="name">Nome</label>
-            <input 
+            <input
               type="text"
               name="name"
               id="name"
@@ -111,7 +114,7 @@ const Signup = () => {
           <div className="field-group">
             <div className="field">
               <label htmlFor="email">E-mail</label>
-              <input 
+              <input
                 type="email"
                 name="email"
                 id="email"
@@ -120,7 +123,7 @@ const Signup = () => {
             </div>
             <div className="field">
               <label htmlFor="whatsapp">Whatsapp</label>
-              <input 
+              <input
                 type="text"
                 name="whatsapp"
                 id="whatsapp"
@@ -137,11 +140,13 @@ const Signup = () => {
           </header>
 
           <ul className="profiles-grid">
-            {profiles.map(profile => (
-              <li 
-                key={profile.id} 
+            {profiles.map((profile) => (
+              <li
+                key={profile.id}
                 onClick={() => handleSelectProfile(profile.id)}
-                className={selectedProfiles.includes(profile.id) ? 'selected' : ''}
+                className={
+                  selectedProfiles.includes(profile.id) ? "selected" : ""
+                }
               >
                 <img src={profile.image_url} alt={profile.name} />
                 <span>{profile.name}</span>
@@ -150,9 +155,7 @@ const Signup = () => {
           </ul>
         </fieldset>
 
-        <button type="submit">
-          Iniciar jornada
-        </button>
+        <button type="submit">Iniciar jornada</button>
       </form>
     </div>
   );

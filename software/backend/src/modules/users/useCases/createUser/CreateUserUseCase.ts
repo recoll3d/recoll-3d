@@ -13,8 +13,20 @@ export class CreateUserUseCase {
   async execute({ name, username, email, password, profile_id }: ICreateUser) {
     const userExist = await prisma.users.findFirst({
       where: {
-        username,
-        email,
+        OR: [
+          {
+            username: {
+              equals: username,
+              mode: "insensitive",
+            },
+          },
+          {
+            email: {
+              equals: email,
+              mode: "insensitive",
+            },
+          }
+        ]
       }
     });
 
@@ -30,10 +42,37 @@ export class CreateUserUseCase {
         username,
         email,
         password: hashPassword,
-        profile_id,
+        profile: {
+          connect: {
+            id: profile_id,
+          }
+        },
       }
     });
 
-    return user;
+    const level = await prisma.levels.findFirst({
+      where: {
+        profile_id,
+        position: 1,
+      },
+    });
+
+    const updatedUser = await prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        level: {
+          connect: {
+            id: level?.id,
+          },
+          update: {
+            unlocked: true,
+          },
+        },
+      },
+    });
+
+    return updatedUser;
   }
 }

@@ -8,7 +8,7 @@ export class CreateUserController {
       username,
       email,
       password,
-      profile_id
+      profile_id,
     } = request.body;
 
     const createUserUseCase = new CreateUserUseCase();

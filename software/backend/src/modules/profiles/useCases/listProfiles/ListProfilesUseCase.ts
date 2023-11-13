@@ -2,14 +2,18 @@ import { prisma } from '../../../../database/prismaClient';
 
 export class ListProfilesUseCase {
   async execute() {
-    const profiles = await prisma.profiles.findMany();
+    const profiles = await prisma.profiles.findMany({
+      include: {
+        levels: true,
+      }
+    });
 
     const serializedProfiles = profiles.map(profile => {
-      const { image, ...rest } = profile
+      const { image, ...rest } = profile;
 
       return {
         ...rest,
-        image_url: `http://localhost:3000/uploads/${image}`
+        image_url: `http://recoll3d.com.br:3333/uploads/${image}`
       };
     });
 

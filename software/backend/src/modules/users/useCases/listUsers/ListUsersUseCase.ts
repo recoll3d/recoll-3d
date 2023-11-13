@@ -8,15 +8,27 @@ export class ListUsersUseCase {
         name: true,
         username: true,
         email: true,
-        created_at: true,
         profile: {
           select: {
             id: true,
-            name: true
+            name: true,
           },
         },
+        level: {
+          select: {
+            id: true,
+            name: true,
+            position: true,
+            unlocked: true,
+          }
+        },
+        created_at: true,
       },
     });
+
+    // const serializedUsers = users.map(user => {
+
+    // })
 
     return users;
   }

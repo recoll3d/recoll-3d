@@ -9,15 +9,18 @@ datasource db {
 
 model Users {
   id             String          @id @default(uuid())
+  profile_id     String
+  level_id       String?
   name           String
   username       String          @unique
   email          String          @unique
   password       String
-  profile_id     String
   created_at     DateTime        @default(now())
   invalid_tokens InvalidTokens[]
   reset_token    ResetTokens?
   profile        Profiles        @relation(fields: [profile_id], references: [id])
+  level          Levels?         @relation(fields: [level_id], references: [id])
+  recycling      Recycling[]
 
   @@map("users")
 }
@@ -28,7 +31,7 @@ model Profiles {
   description String
   image       String
   created_at  DateTime @default(now())
-  levels      Levels?
+  levels      Levels[]
   users       Users[]
 
   @@map("profiles")
@@ -55,36 +58,37 @@ model ResetTokens {
 }
 
 model Levels {
-  id             String        @id @default(uuid())
-  profile_id     String        @unique
-  name           String        @unique
+  id             String         @id @default(uuid())
+  profile_id     String
+  name           String         @unique
   description    String
   image          String
   required_score Int
-  position       Int?          @unique
-  created_at     DateTime      @default(now())
-  unlocked       Boolean
-  level_rewards  LevelRewards?
-  profile        Profiles      @relation(fields: [profile_id], references: [id])
+  position       Int?
+  created_at     DateTime       @default(now())
+  unlocked       Boolean?       @default(false)
+  profile        Profiles       @relation(fields: [profile_id], references: [id])
+  level_rewards  LevelRewards[]
+  users          Users[]
 
   @@map("levels")
 }
 
 model LevelRewards {
-  id          String   @id @default(uuid())
-  level_id    String   @unique
+  id          String    @id @default(uuid())
+  level_id    String    @unique
   name        String
   description String
   image       String
-  unlocked_at DateTime
-  level       Levels   @relation(fields: [level_id], references: [id])
+  unlocked_at DateTime?
+  level       Levels    @relation(fields: [level_id], references: [id])
 
   @@map("level_rewards")
 }
 
 model CollectionPoints {
-  id          String @id @default(uuid())
-  mac_address String @unique
+  id          String      @id @default(uuid())
+  mac_address String      @unique
   image       String
   name        String
   email       String
@@ -92,7 +96,34 @@ model CollectionPoints {
   latitude    Float
   longitude   Float
   city        String
-  uf          String @db.Char(2)
+  uf          String      @db.Char(2)
+  recycling   Recycling[]
 
   @@map("collection_points")
+}
+
+model Recycling {
+  id                  String            @id @default(uuid())
+  user_id             String
+  collect_point_id    String?
+  number_of_bottles   Int
+  total_bottles_score Int
+  created_at          DateTime          @default(now())
+  end_at              DateTime?
+  user                Users             @relation(fields: [user_id], references: [id])
+  collect_point       CollectionPoints? @relation(fields: [collect_point_id], references: [id])
+  Bottles             Bottles[]
+
+  @@map("recycling")
+}
+
+model Bottles {
+  id           String    @id @default(uuid())
+  recycling_id String
+  level        Int
+  points       Int
+  created_at   DateTime  @default(now())
+  recycling    Recycling @relation(fields: [recycling_id], references: [id])
+
+  @@map("bottles")
 }
