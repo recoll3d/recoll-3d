@@ -1,8 +1,8 @@
 import { prisma } from '../../../database/prismaClient';
 import { compare } from 'bcrypt';
+import Cookies from 'js-cookie';
 import { sign } from 'jsonwebtoken';
 import { env } from 'process';
-import { Response } from 'express';
 
 interface IAuthenticateUser {
   username: string;
@@ -55,6 +55,15 @@ export class AuthenticateUserUseCase {
       expiresIn: "1d",
     });
 
-    return token;
+    Cookies.set("token", token, {
+      expires: 1,
+    });
+
+    const data = {
+      user_id: user.id,
+      token,
+    };
+
+    return data;
   }
 }

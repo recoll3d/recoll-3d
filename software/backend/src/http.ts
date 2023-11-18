@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import 'express-async-errors';
 
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction, request } from 'express';
 import http from 'http';
 import cors from 'cors';
 import path from 'path';
@@ -29,6 +29,8 @@ app.use(express.json());
 app.use(routes);
 
 app.use('/uploads/', express.static(path.resolve(__dirname, 'uploads')));
+
+// console.log(request.headers.authorization);
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {

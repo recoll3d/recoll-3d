@@ -1,4 +1,6 @@
+import { response } from 'express';
 import { prisma } from '../../../database/prismaClient';
+import Cookies from 'js-cookie';
 
 interface IInvalidTokens {
   authHeader: string;
@@ -23,6 +25,9 @@ export class DisconnectUserUseCase {
         user_id,
       }
     });
+
+    // response.cookie('token', undefined);
+    Cookies.remove('token');
 
     return token;
   }

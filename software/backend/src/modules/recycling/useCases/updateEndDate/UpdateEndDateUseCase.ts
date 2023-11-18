@@ -15,11 +15,11 @@ export class UpdateEndDateUseCase {
         recycling: {
           id: recycling_id,
           user_id,
+          end_at: null,
         }
       },
       select: {
         points: true,
-
       }
     });
 
@@ -31,6 +31,7 @@ export class UpdateEndDateUseCase {
       where: {
         id: recycling_id,
         user_id,
+        end_at: null
       },
       data: {
         end_at: new Date(),

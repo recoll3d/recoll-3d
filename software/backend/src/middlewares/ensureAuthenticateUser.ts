@@ -40,12 +40,12 @@ export async function ensureAuthenticateUser(
       env.USER_MD5_HASH as string
     ) as IPayload;
 
-    const days = 1;
+    // const days = 1;
 
-    response.cookie('token', token, {
-      expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    });
+    // response.cookie('token', token, {
+    //   expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
+    //   httpOnly: true,
+    // });
 
     request.user_id = sub;
 

@@ -1,4 +1,6 @@
+import { request } from 'express';
 import { prisma } from '../../../../database/prismaClient';
+import Cookies from 'js-cookie';
 
 export class ListProfilesUseCase {
   async execute() {
@@ -13,9 +15,12 @@ export class ListProfilesUseCase {
 
       return {
         ...rest,
-        image_url: `http://recoll3d.com.br:3333/uploads/${image}`
+        image_url: `http://localhost:3333/uploads/${image}`
       };
     });
+
+    const token = Cookies.get("token");
+    console.log(token);
 
     return serializedProfiles;
   }

@@ -74,7 +74,8 @@ routes.get("/users/", ensureAuthenticateUser, listUsersController.handle);
 routes.get("/profiles/", listProfilesController.handle);
 routes.get("/levels", listLevelsController.handle);
 
-routes.get("/users/:id", ensureAuthenticateUser, findUserController.handle);
+// routes.get("/users/:id", ensureAuthenticateUser, findUserController.handle);
+routes.get("/users/:token", ensureAuthenticateUser, findUserController.handle);
 routes.get("/bottles/", bottleDetailsController.handle);
 
 routes.put(

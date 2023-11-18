@@ -1,0 +1,113 @@
+:root {
+  --primary-color: #05F283;
+  --title-color: #0B1C26;
+  --text-color: #6C6C80;
+  /* Adicionei Recentemente (15/11/2023) */
+  --hover-color: #BDF094;
+  --pale-green: hsl(96, 75%, 89%);
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 18%);
+  --text-color: hsl(240, 1%, 48%);
+  /* --background-color: hsl(220, 10%, 94%); */
+  --background-color: #F0F0F5;
+  --grey-text: rgb(190, 190, 190);
+  --input-color: hsl(330, 12%, 97%);
+
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smallest-font-size: .75rem;
+}
+
+.side-bar {
+  background: var(--white-color);
+  box-shadow: 1px 0px 4px var(--grey-text);
+  width: 18%;
+  height: 100%;
+  gap: 3rem;
+  overflow: auto;
+
+  .logo {
+    padding: 1.5rem 1.5rem 0;
+    margin: 1.5rem 0;
+    cursor: pointer;
+
+    img {
+      // max-width: 20px;
+      margin-right: 2rem;
+      // background: var(--input-color);
+      // border-radius: 2px;
+      // padding: .2rem;
+    }
+
+    h2 {
+      font-size: var(--h2-font-size);
+      color: var(--primary-color);
+    }
+  }
+
+  .menu, .settings, .logout {
+    .title {
+      font-size: var(--h3-font-size);
+      color: var(--black-color);
+      padding: 0 1.5rem 1.5rem;
+      font-weight: 700;
+    }
+
+    .lists {
+      .list-item {
+        padding: .2rem 1.5rem;
+        width: 100%;
+        position: relative;
+
+        &::before {
+          position: absolute;
+          content: '';
+          height: 0%;
+          left: 0;
+          width: 5px;
+          bottom: 0;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          background: var(--primary-color);
+        }
+
+        .link {
+          color: var(--grey-text);
+          font-weight: 500;
+          transition: 0;
+
+          .icon {
+            margin-right: .5rem;
+          }
+        }
+
+        &:hover .link {
+          color: var(--primary-color);
+          transition: 0;
+        }
+
+        &:hover::before {
+          height: 100%;
+          transform: .3s ease;
+        }
+      }
+    }
+  }
+
+  .logout {
+    margin: 2rem 0 3.5rem 0;
+
+    .lists {
+      .list-item {
+        .link {
+          font-weight: 600;
+          color: var(--black-color);
+        }
+      }
+    }
+  }
+}

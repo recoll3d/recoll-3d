@@ -1,0 +1,48 @@
+.listing main {
+  align-items: center;
+}
+
+.listing main button {
+  width: 100%;
+  max-width: 360px;
+  height: 72px;
+
+  background: var(--primary-color);
+  
+  border-radius: 8px;
+  text-decoration: none;
+
+  border: 0;
+
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  margin-top: 40px;
+  cursor: pointer;
+}
+
+.listing main button span {
+  display: block;
+  background: rgba(0, 0, 0, 0.08);
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.listing main button span svg {
+  color: #FFF;
+  width: 20px;
+  height: 20px;
+}
+
+.listing main button strong {
+  flex: 1;
+  text-align: center;
+  color: #FFF;
+  margin: 0 8px;
+}

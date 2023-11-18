@@ -6,6 +6,10 @@ export class ListProfilesController {
     const listProfilesUseCase = new ListProfilesUseCase();
     const result = await listProfilesUseCase.execute();
 
+    // response.cookie('token', undefined);
+
+    // console.log(request.headers.cookie);
+
     return response.json(result);
   }
 }

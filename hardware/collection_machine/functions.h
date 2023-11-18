@@ -10,7 +10,8 @@ void sendEventName();
 void sendMacAddress();
 void handleRecycling();
 
-void lowLevelBottle();
+// void handleBottle(int motionSensor, int limit, int level, int points);
+void handleBottle(int lowSensor, int limit, int level, int points);
 // void middleLevelBottle(char* points);
 // void highLevelBottle(char* points);
 

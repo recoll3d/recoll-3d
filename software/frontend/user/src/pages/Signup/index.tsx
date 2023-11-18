@@ -1,7 +1,11 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-import api from "../../services/api";
+import { useForm } from "react-hook-form";
+
+import { AuthContext } from "../../contexts/AuthContext";
+
+import { api } from "../../services/api";
 
 import "./styles.css";
 
@@ -19,27 +23,53 @@ interface Profile {
 const Signup = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   whatsapp: "",
+  // });
 
   const [selectedProfiles, setSelectedProfiles] = useState<number[]>([]);
 
   const navigate = useNavigate();
 
+  const { register, handleSubmit } = useForm();
+  const { signIn } = useContext(AuthContext);
+
   useEffect(() => {
-    api.get("/profiles").then((response) => {
-      setProfiles(response.data);
-    });
+    api
+      .get("/profiles")
+      .then((response) => {
+        setProfiles(response.data);
+      })
+      .catch((err) => {
+        setProfiles([]);
+        console.log(err);
+      });
   }, []);
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+  async function handleSignUp(data: any) {
+    const newData = {
+      ...data,
+      profile_id: selectedProfiles[0],
+    };
+    await api.post("/users", newData);
 
-    setFormData({ ...formData, [name]: value });
+    console.log(data);
+    console.log(selectedProfiles);
+
+    const { email, username, password } = data;
+
+    const dataLogin = await signIn({ email, username, password });
+
+    console.log(dataLogin);
   }
+
+  // function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+  //   const { name, value } = event.target;
+
+  //   setFormData({ ...formData, [name]: value });
+  // }
 
   function handleSelectProfile(id: number) {
     const alreadySelected = selectedProfiles.findIndex(
@@ -57,37 +87,39 @@ const Signup = () => {
     }
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
+  // async function handleSubmit(event: FormEvent) {
+  //   event.preventDefault();
 
-    const { name, email, whatsapp } = formData;
-    const profiles = selectedProfiles;
+  //   const { name, email, whatsapp } = formData;
+  //   const profiles = selectedProfiles;
 
-    // const data = new FormData();
+  //   // const data = new FormData();
 
-    // data.append('name', name);
-    // data.append('email', email);
-    // data.append('whatsapp', whatsapp);
-    // data.append('profile', profiles.join(''));
+  //   // data.append('name', name);
+  //   // data.append('email', email);
+  //   // data.append('whatsapp', whatsapp);
+  //   // data.append('profile', profiles.join(''));
 
-    const data = {
-      name,
-      email,
-      whatsapp,
-      profile: profiles.join(""),
-    };
+  //   const data = {
+  //     name,
+  //     email,
+  //     whatsapp,
+  //     profile: profiles.join(""),
+  //   };
 
-    // await api.post('user', data);
-    console.log(data);
-    alert("Ponto de coleta criado!");
+  //   // await api.post('user', data);
+  //   console.log(data);
+  //   alert("Ponto de coleta criado!");
 
-    // navigate('/');
-  }
+  //   // navigate('/');
+  // }
 
   return (
     <div id="page-signup">
       <header>
-        <img src={logo} alt="Ecoleta" />
+        <div>
+          <img src={logo} alt="Recoll3D" />
+        </div>
 
         <Link to="/">
           <FiArrowLeft />
@@ -95,19 +127,24 @@ const Signup = () => {
         </Link>
       </header>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleSignUp)}>
+        <header role="title">
+          <h2>Seu Cadastro</h2>
+        </header>
+
         <fieldset>
           <header role="legend">
-            <h2>Seus Dados</h2>
+            <h2>Dados</h2>
           </header>
 
           <div className="field">
             <label htmlFor="name">Nome</label>
             <input
+              {...register("name")}
               type="text"
               name="name"
               id="name"
-              onChange={handleInputChange}
+              // onChange={handleInputChange}
             />
           </div>
 
@@ -115,21 +152,34 @@ const Signup = () => {
             <div className="field">
               <label htmlFor="email">E-mail</label>
               <input
+                {...register("email")}
                 type="email"
                 name="email"
                 id="email"
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
               />
             </div>
             <div className="field">
-              <label htmlFor="whatsapp">Whatsapp</label>
+              <label htmlFor="username">Apelido Player</label>
               <input
+                {...register("username")}
                 type="text"
-                name="whatsapp"
-                id="whatsapp"
-                onChange={handleInputChange}
+                name="username"
+                id="username"
+                // onChange={handleInputChange}
               />
             </div>
+          </div>
+
+          <div className="field">
+            <label htmlFor="password">Senha</label>
+            <input
+              {...register("password")}
+              type="text"
+              name="password"
+              id="password"
+              // onChange={handleInputChange}
+            />
           </div>
         </fieldset>
 

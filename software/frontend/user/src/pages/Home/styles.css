@@ -44,7 +44,7 @@
   width: 100%;
   max-width: 360px;
   height: 72px;
-  background: var(--primary-color);
+  
   border-radius: 8px;
   text-decoration: none;
 
@@ -53,6 +53,15 @@
   overflow: hidden;
 
   margin-top: 40px;
+}
+
+#page-home .content main a.primary-button {
+  background: var(--primary-color);
+}
+
+#page-home .content main a.secondary-button {
+  background: #FFF;
+  border: 1px solid var(--primary-color);
 }
 
 #page-home .content main a span {
@@ -67,6 +76,11 @@
   transition: background-color 0.2s;
 }
 
+#page-home .content main a.secondary-button span {
+  background: #F0F0F5;
+  border-right: 1px solid var(--primary-color);
+}
+
 #page-home .content main a span svg {
   color: #FFF;
   width: 20px;
@@ -79,8 +93,16 @@
   color: #FFF;
 }
 
+#page-home .content main a.secondary-button strong {
+  color: var(--primary-color);
+}
+
+#page-home .content main a.primary-button:hover {
+  background: #04C168;
+}
+
 #page-home .content main a:hover {
-  background: #2FB86E;
+  background: #F0F0F5;
 }
 
 @media(max-width: 900px) {

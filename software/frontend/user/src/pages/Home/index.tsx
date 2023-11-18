@@ -1,11 +1,23 @@
-import { FiLogIn } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { useEffect } from "react";
+import { FiLogIn } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
-import './styles.css';
+import "./styles.css";
 
-import logo from '../../assets/logo.svg';
+import logo from "../../assets/logo.svg";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("reactauth.token");
+
+    if (token) {
+      navigate("/dashboard");
+    }
+  });
+
   return (
     <div id="page-home">
       <div className="content">
@@ -15,25 +27,28 @@ const Home = () => {
 
         <main>
           <h1>Seu ponto de partida para a reciclagem!</h1>
-          <p>Facilitando a busca por pontos de coleta para transformar resíduos em brindes sustentáveis.</p>
+          <p>
+            Facilitando a busca por pontos de coleta para transformar resíduos
+            em brindes sustentáveis.
+          </p>
 
-          <Link to="/signup">
+          <Link to="/signin" className="primary-button">
             <span>
               <FiLogIn />
             </span>
             <strong>Entrar</strong>
           </Link>
 
-          <Link to="/sigin">
+          <Link to="/signup" className="secondary-button">
             <span>
-              <FiLogIn />
+              <FiLogIn color="var(--primary-color)" />
             </span>
             <strong>Cadastre-se agora</strong>
           </Link>
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home;

@@ -2,13 +2,54 @@
   --primary-color: #05F283;
   --title-color: #0B1C26;
   --text-color: #6C6C80;
+  /* Adicionei Recentemente (15/11/2023) */
+  --hover-color: #BDF094;
+  --pale-green: hsl(96, 75%, 89%);
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 18%);
+  --text-color: hsl(240, 1%, 48%);
+  /* --background-color: hsl(220, 10%, 94%); */
+  --background-color: #F0F0F5;
+  --grey-text: rgb(190, 190, 190);
+  --input-color: hsl(330, 12%, 97%);
+
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smallest-font-size: .75rem;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Adicionei Recentemente (15/11/2023) */
+  font-family: 'Rajdhani', sans-serif;
+  transition: .3s ease;
 }
+
+/* Adicionei Recentemente (15/11/2023) */
+html {
+  font-size: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+/* ----------------------------------- */
 
 body {
   background: #F0F0F5;
@@ -17,10 +58,17 @@ body {
 }
 
 body, input, button {
-  font-family: Roboto, Arial, Helvetica, sans-serif;
+  /* font-family: Roboto, Arial, Helvetica, sans-serif; */
+  /* Adicionei Recentemente (15/11/2023) */
+  font-family: Inter, Arial, Helvetica, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--title-color);
-  font-family: Ubuntu;
+  /* Adicionei Recentemente (15/11/2023) */
+  font-family: Rajdhani;
+}
+
+h1, h2 {
+  font-weight: 500;
 }
