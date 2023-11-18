@@ -2,10 +2,12 @@
 #include "global_variables.h"
 
 #include <ArduinoJson.h>
+#include <NewPing.h>
 
 SocketIOclient socketIO;
+NewPing lowSonar(LOW_TRIGGER, LOW_ECHO, MAX_DISTANCE);
 
-bool eventoEnviado = false;
+bool eventSent = false;
 
 void socketIOEvent(socketIOmessageType_t type, uint8_t *payload, size_t length)
 {
@@ -127,7 +129,7 @@ void sendEventName()
     socketIO.sendEVENT(output);
 
     // Print JSON for debugging
-    USE_SERIAL.println(output);
+    // USE_SERIAL.println(output);
   }
 }
 
@@ -147,7 +149,7 @@ void sendMacAddress()
   String output;
   serializeJson(docOut, output);
 
-  USE_SERIAL.println(output);
+  // USE_SERIAL.println(output);
 
   // Envia o MAC para o servidor via Socket.IO
   socketIO.sendEVENT(output);
@@ -170,13 +172,31 @@ void handleRecycling()
   String output;
   serializeJson(docOut, output);
 
-  USE_SERIAL.println(output);
+  // USE_SERIAL.println(output);
 
   socketIO.sendEVENT(output);
 
-  lowLevelBottle();
+  // int lowMotionSensor = digitalRead(LOW_MOTION_SENSOR);
+  // int midMotionSensor = digitalRead(MID_MOTION_SENSOR);
+  // int highMotionSensor = digitalRead(HIGH_MOTION_SENSOR);
 
-  bool bottleDetected = digitalRead(LOW_START_KEY) == 1 && digitalRead(LOW_END_KEY) == 1 && !eventoEnviado;
+  USE_SERIAL.println(lowSonar.ping_cm());
+  // handleBottle(lowSonar.ping_cm(), 8, 1, 15);
+  handleBottle(lowSonar.ping_cm(), 12, 1, 15);
+  delay(100);
+  // if (lowMotionSensor && !midMotionSensor && !highMotionSensor)
+  // {
+  // }
+  // if (midMotionSensor && !lowMotionSensor && !highMotionSensor)
+  // {
+  //   return handleBottle(MID_MOTION_SENSOR, 2, 20);
+  // }
+  // if (highMotionSensor && !lowMotionSensor && !midMotionSensor)
+  // {
+  //   return handleBottle(HIGH_MOTION_SENSOR, 3, 25);
+  // }
+
+  // bool bottleDetected = digitalRead(LOW_START_KEY) == 1 && digitalRead(LOW_END_KEY) == 1 && !eventoEnviado;
 
   // if (bottleDetected) {
   //   DynamicJsonDocument docOut(1024);
@@ -214,12 +234,14 @@ void handleRecycling()
   // }
 }
 
-void lowLevelBottle()
+void handleBottle(int lowSensor, int limit, int level, int points)
 {
   // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-  bool bottleDetected2 = digitalRead(BUTTON_PIN);
+  // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
+  bool bottleDetected = lowSensor < limit && lowSensor > 0 && !eventSent;
+  // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
 
-  if (bottleDetected2 && !eventoEnviado)
+  if (bottleDetected)
   {
     DynamicJsonDocument docOut(1024);
     JsonArray array = docOut.to<JsonArray>();
@@ -227,51 +249,52 @@ void lowLevelBottle()
     array.add("register_bottle");
 
     JsonObject param1 = array.createNestedObject();
-    param1["level"] = 1;
-    param1["points"] = 15;
+    param1["level"] = level;
+    param1["points"] = points;
     param1["mac_address"] = String(WiFi.macAddress());
 
     String output;
     serializeJson(docOut, output);
 
-    USE_SERIAL.println("Você ganhou 15 pontos");
+    // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+    // USE_SERIAL.println("Você ganhou %d pontos\n", points);
     USE_SERIAL.println(output);
 
     socketIO.sendEVENT(output);
 
-    eventoEnviado = true;
+    eventSent = true;
   }
-  else if (!bottleDetected2)
+  else if (lowSensor >= limit)
   {
-    eventoEnviado = false;
+    eventSent = false;
   }
 }
 
-void middleLevelBottle(char *points)
-{
-  // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-  if (digitalRead(MID_START_KEY) == 1 && digitalRead(MID_END_KEY) == 1)
-  {
-    // return client.send(points);
+// void middleLevelBottle()
+// {
+//   // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
+//   if (digitalRead(MID_START_KEY) == 1 && digitalRead(MID_END_KEY) == 1)
+//   {
+//     // return client.send(points);
 
-    Serial.print("Obrigado por reciclar");
-    Serial.println("Você ganhou 15 pontos");
-  }
-  // // Não conta os pontos se as duas chaves não acionarem ao mesmo tempo.
-  // } else if (digitalRead(chave3) == 0 && digitalRead(chave4) == 1 ){
-  //   Serial.print("Não acontece nada");
+//     Serial.print("Obrigado por reciclar");
+//     Serial.println("Você ganhou 15 pontos");
+//   }
+//   // // Não conta os pontos se as duas chaves não acionarem ao mesmo tempo.
+//   // } else if (digitalRead(chave3) == 0 && digitalRead(chave4) == 1 ){
+//   //   Serial.print("Não acontece nada");
 
-  // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 0 ){
-  //   Serial.print("Não acontece nada");
+//   // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 0 ){
+//   //   Serial.print("Não acontece nada");
 
-  // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 1 ){
-  //   Serial.print("Não acontece nada");
-  // }
-}
+//   // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 1 ){
+//   //   Serial.print("Não acontece nada");
+//   // }
+// }
 
-void highLevelBottle(char *points)
-{
-  // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-  Serial.print("Obrigado por reciclar");
-  Serial.println("Você ganhou 20 pontos");
-}
+// void highLevelBottle(char *points)
+// {
+//   // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
+//   Serial.print("Obrigado por reciclar");
+//   Serial.println("Você ganhou 20 pontos");
+// }

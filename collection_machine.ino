@@ -29,14 +29,14 @@ void setup()
   pinMode(BLUE_LED, OUTPUT);
   pinMode(GIFT_RELEASE_RELAY, OUTPUT);
 
-  pinMode(HIGH_START_KEY, INPUT_PULLUP);
-  pinMode(HIGH_END_KEY, INPUT_PULLUP);
-  pinMode(MID_START_KEY, INPUT_PULLUP);
-  pinMode(MID_END_KEY, INPUT_PULLUP);
-  pinMode(LOW_START_KEY, INPUT_PULLUP);
-  pinMode(LOW_END_KEY, INPUT_PULLUP);
+  // pinMode(LOW_MOTION_SENSOR, INPUT);
+  // pinMode(MID_MOTION_SENSOR, INPUT);
+  // pinMode(HIGH_MOTION_SENSOR, INPUT);
+  // pinMode(MID_END_KEY, INPUT_PULLUP);
+  // pinMode(LOW_START_KEY, INPUT_PULLUP);
+  // pinMode(LOW_END_KEY, INPUT_PULLUP);
 
-  pinMode(BUTTON_PIN, INPUT);
+  // pinMode(BUTTON_PIN, INPUT);
 
   for (uint8_t t = 4; t > 0; t--)
   {
@@ -58,14 +58,26 @@ void setup()
 
   // Obter o endereço IPv4
   IPAddress localIP = WiFi.localIP();
-  localIP[3]--;
+
+  if (localIP[3] >= 100)
+  {
+    localIP[3] -= 100;
+  }
+  else if (localIP[3] >= 10)
+  {
+    localIP[3] -= 10;
+  }
+  else
+  {
+    localIP[3]--;
+  }
 
   Serial.print("Endereço IPv4: ");
   Serial.println(localIP);
 
   // server address, port and URL
-  socketIO.begin(localIP.toString(), 3000, "/socket.io/?EIO=4");
-  // socketIO.begin("10.122.177.50", 3000, "/socket.io/?EIO=4");
+  socketIO.begin(localIP.toString(), 3333, "/socket.io/?EIO=4");
+  // socketIO.begin("10.122.177.50", 3333, "/socket.io/?EIO=4");
 
   // event handler
   socketIO.onEvent(socketIOEvent);
@@ -78,7 +90,7 @@ void loop()
   if (socketIO.isConnected())
   {
     // sendEventName();
-    sendMacAddress();
+    // sendMacAddress();
     handleRecycling();
   }
 }
