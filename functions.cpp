@@ -3,11 +3,23 @@
 
 #include <ArduinoJson.h>
 #include <NewPing.h>
+#include <math.h>
 
 SocketIOclient socketIO;
-NewPing lowSonar(LOW_TRIGGER, LOW_ECHO, MAX_DISTANCE);
 
-bool eventSent = false;
+NewPing lowSonar(LOW_TRIGGER, LOW_ECHO, MAX_DISTANCE);
+NewPing midSonar(MID_TRIGGER, MID_ECHO, MAX_DISTANCE);
+NewPing highSonar(HIGH_TRIGGER, HIGH_ECHO, MAX_DISTANCE);
+
+long int lastLowSonarReading = 0;
+long int lastMidSonarReading = 0;
+long int lastHighSonarReading = 0;
+
+bool lowEventSent = false;
+bool middleEventSent = false;
+bool highEventSent = false;
+
+const int MARGIN_OF_TOLERANCE = 0;
 
 void socketIOEvent(socketIOmessageType_t type, uint8_t *payload, size_t length)
 {
@@ -157,6 +169,30 @@ void sendMacAddress()
   delay(1000);
 }
 
+// void sendGetLed()
+// {
+//   // creat JSON message for Socket.IO (ack)
+//   DynamicJsonDocument docOut(1024);
+//   JsonArray array = docOut.to<JsonArray>();
+
+//   array.add("get_led");
+
+//   // add payload (parameters) for the ack (callback function)
+//   JsonObject param1 = array.createNestedObject();
+//   param1["text"] = 'Tanto faz';
+
+//   // JSON to String (serializion)
+//   String output;
+//   serializeJson(docOut, output);
+
+//   // USE_SERIAL.println(output);
+
+//   // Envia o MAC para o servidor via Socket.IO
+//   socketIO.sendEVENT(output);
+
+//   delay(1000);
+// }
+
 void handleRecycling()
 {
   DynamicJsonDocument docOut(1024);
@@ -180,121 +216,243 @@ void handleRecycling()
   // int midMotionSensor = digitalRead(MID_MOTION_SENSOR);
   // int highMotionSensor = digitalRead(HIGH_MOTION_SENSOR);
 
-  USE_SERIAL.println(lowSonar.ping_cm());
-  // handleBottle(lowSonar.ping_cm(), 8, 1, 15);
-  handleBottle(lowSonar.ping_cm(), 12, 1, 15);
-  delay(100);
-  // if (lowMotionSensor && !midMotionSensor && !highMotionSensor)
-  // {
-  // }
-  // if (midMotionSensor && !lowMotionSensor && !highMotionSensor)
-  // {
-  //   return handleBottle(MID_MOTION_SENSOR, 2, 20);
-  // }
-  // if (highMotionSensor && !lowMotionSensor && !midMotionSensor)
-  // {
-  //   return handleBottle(HIGH_MOTION_SENSOR, 3, 25);
-  // }
+  // =========== ÚLTIMOS QUE FORAM UTILIZADOS ===========:
+  // USE_SERIAL.println('SENSOR MÉDIO:');
+  // USE_SERIAL.println(midSonar.ping_cm());
 
-  // bool bottleDetected = digitalRead(LOW_START_KEY) == 1 && digitalRead(LOW_END_KEY) == 1 && !eventoEnviado;
-
-  // if (bottleDetected) {
-  //   DynamicJsonDocument docOut(1024);
-  //   JsonArray array = docOut.to<JsonArray>();
-
-  //   array.add("register_bottle");
-
-  //   JsonObject param1 = array.createNestedObject();
-  //   param1["level"] = 1;
-  //   param1["points"] = 15;
-
-  //   String output;
-  //   serializeJson(docOut, output);
-
-  //   USE_SERIAL.println("Você ganhou 15 pontos");
-  //   USE_SERIAL.println(output);
-
-  //   socketIO.sendEVENT(output);
-
-  //   eventoEnviado = true;
-  // } else if (digitalRead(LOW_START_KEY) == 0 || digitalRead(LOW_END_KEY) == 0) {
-  //   eventoEnviado = false;
-  // }
-
-  // =================================================================================
-
-  // bool valorPIR = digitalRead(pinPIR);
-
-  // if (valorPIR && !eventoEnviado) {
-  //   Serial.println("DETECTADO");
-  //   eventoEnviado = true;
-  // } else if (!valorPIR) {
-  //   Serial.println("---------");
-  //   eventoEnviado = false;
-  // }
-}
-
-void handleBottle(int lowSensor, int limit, int level, int points)
-{
-  // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-  // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
-  bool bottleDetected = lowSensor < limit && lowSensor > 0 && !eventSent;
-  // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
-
-  if (bottleDetected)
+  if (lowSonar.ping_cm() < 8 && fabs(lowSonar.ping_cm() - lastLowSonarReading) > MARGIN_OF_TOLERANCE && !lowEventSent)
   {
-    DynamicJsonDocument docOut(1024);
-    JsonArray array = docOut.to<JsonArray>();
-
-    array.add("register_bottle");
-
-    JsonObject param1 = array.createNestedObject();
-    param1["level"] = level;
-    param1["points"] = points;
-    param1["mac_address"] = String(WiFi.macAddress());
-
-    String output;
-    serializeJson(docOut, output);
-
-    // USE_SERIAL.println("Você ganhou %d pontos\n", points);
-    // USE_SERIAL.println("Você ganhou %d pontos\n", points);
-    USE_SERIAL.println(output);
-
-    socketIO.sendEVENT(output);
-
-    eventSent = true;
+    lowLevelBottle();
   }
-  else if (lowSensor >= limit)
+  else if (lowSonar.ping_cm() >= 8)
   {
-    eventSent = false;
+    lowEventSent = false;
   }
-}
 
-// void middleLevelBottle()
+  if (midSonar.ping_cm() < 12 && fabs(midSonar.ping_cm() - lastMidSonarReading) > MARGIN_OF_TOLERANCE && !middleEventSent)
+  {
+    middleLevelBottle();
+  }
+  else if (midSonar.ping_cm() >= 12)
+  {
+    middleEventSent = false;
+  }
+
+  if (highSonar.ping_cm() < 12 && fabs(highSonar.ping_cm() - lastHighSonarReading) > MARGIN_OF_TOLERANCE && !highEventSent)
+  {
+    highLevelBottle();
+  }
+  else if (highSonar.ping_cm() >= 12)
+  {
+    highEventSent = false;
+  }
+  // ====================================================;
+
+  // handleBottle2(LOW_MOTION_SENSOR, 1, 15);
+
+  delay(50);
+}
+// if (lowMotionSensor && !midMotionSensor && !highMotionSensor)
 // {
-//   // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-//   if (digitalRead(MID_START_KEY) == 1 && digitalRead(MID_END_KEY) == 1)
+// }
+// if (midMotionSensor && !lowMotionSensor && !highMotionSensor)
+// {
+//   return handleBottle(MID_MOTION_SENSOR, 2, 20);
+// }
+// if (highMotionSensor && !lowMotionSensor && !midMotionSensor)
+// {
+//   return handleBottle(HIGH_MOTION_SENSOR, 3, 25);
+// }
+
+// bool bottleDetected = digitalRead(LOW_START_KEY) == 1 && digitalRead(LOW_END_KEY) == 1 && !eventoEnviado;
+
+// if (bottleDetected) {
+//   DynamicJsonDocument docOut(1024);
+//   JsonArray array = docOut.to<JsonArray>();
+
+//   array.add("register_bottle");
+
+//   JsonObject param1 = array.createNestedObject();
+//   param1["level"] = 1;
+//   param1["points"] = 15;
+
+//   String output;
+//   serializeJson(docOut, output);
+
+//   USE_SERIAL.println("Você ganhou 15 pontos");
+//   USE_SERIAL.println(output);
+
+//   socketIO.sendEVENT(output);
+
+//   eventoEnviado = true;
+// } else if (digitalRead(LOW_START_KEY) == 0 || digitalRead(LOW_END_KEY) == 0) {
+//   eventoEnviado = false;
+// }
+
+// =================================================================================
+
+// bool valorPIR = digitalRead(pinPIR);
+
+// if (valorPIR && !eventoEnviado) {
+//   Serial.println("DETECTADO");
+//   eventoEnviado = true;
+// } else if (!valorPIR) {
+//   Serial.println("---------");
+//   eventoEnviado = false;
+// }
+// }
+
+// void handleBottle2(int motionSensor, int level, int points)
+// {
+//   bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
+
+//   if (bottleDetected)
 //   {
-//     // return client.send(points);
+//     DynamicJsonDocument docOut(1024);
+//     JsonArray array = docOut.to<JsonArray>();
 
-//     Serial.print("Obrigado por reciclar");
-//     Serial.println("Você ganhou 15 pontos");
+//     array.add("register_bottle");
+
+//     JsonObject param1 = array.createNestedObject();
+//     param1["level"] = level;
+//     param1["points"] = points;
+//     param1["mac_address"] = String(WiFi.macAddress());
+
+//     String output;
+//     serializeJson(docOut, output);
+
+//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+//     USE_SERIAL.println(output);
+
+//     socketIO.sendEVENT(output);
+
+//     eventSent = true;
 //   }
-//   // // Não conta os pontos se as duas chaves não acionarem ao mesmo tempo.
-//   // } else if (digitalRead(chave3) == 0 && digitalRead(chave4) == 1 ){
-//   //   Serial.print("Não acontece nada");
-
-//   // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 0 ){
-//   //   Serial.print("Não acontece nada");
-
-//   // } else if (digitalRead(chave3) == 1 && digitalRead(chave4) == 1 ){
-//   //   Serial.print("Não acontece nada");
-//   // }
+//   else if (digitalRead(motionSensor) == 0)
+//   {
+//     eventSent = false;
+//   }
 // }
 
-// void highLevelBottle(char *points)
+// ========================= ÚLTIMOS QUE FORAM UTILIZADOS =========================:
+// void handleBottle(int sensor, int minLimit, int maxLimit, int level, int points)
 // {
 //   // Conta os pontos quando as duas chaves são pressionadas simultaneamente.
-//   Serial.print("Obrigado por reciclar");
-//   Serial.println("Você ganhou 20 pontos");
+//   // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
+//   // bool bottleDetected = sensor < limit && sensor >= 3 && !eventSent;
+//   bool bottleDetected = sensor >= 1 && !eventSent;
+//   // bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
+
+//   if (bottleDetected)
+//   {
+//     DynamicJsonDocument docOut(1024);
+//     JsonArray array = docOut.to<JsonArray>();
+
+//     array.add("register_bottle");
+
+//     JsonObject param1 = array.createNestedObject();
+//     param1["level"] = level;
+//     param1["points"] = points;
+//     param1["mac_address"] = String(WiFi.macAddress());
+
+//     String output;
+//     serializeJson(docOut, output);
+
+//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+//     USE_SERIAL.println(output);
+
+//     socketIO.sendEVENT(output);
+
+//     eventSent = true;
+//   }
+//   else if (sensor > maxLimit)
+//   {
+//     eventSent = false;
+//   }
 // }
+// ==============================================================================
+
+void lowLevelBottle()
+{
+  USE_SERIAL.println(lowSonar.ping_cm());
+  // handleBottle(lowSonar.ping_cm(), 0, 8, 1, 15);
+  DynamicJsonDocument docOut(1024);
+  JsonArray bottleArray = docOut.to<JsonArray>();
+
+  bottleArray.add("register_bottle");
+
+  JsonObject param1 = bottleArray.createNestedObject();
+  param1["level"] = 1;
+  param1["points"] = 15;
+  param1["mac_address"] = String(WiFi.macAddress());
+
+  String output;
+  serializeJson(docOut, output);
+
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  USE_SERIAL.println(output);
+
+  socketIO.sendEVENT(output);
+
+  lastLowSonarReading = lowSonar.ping_cm();
+  lowEventSent = true;
+}
+
+void middleLevelBottle()
+{
+  USE_SERIAL.println(midSonar.ping_cm());
+  // handleBottle(midSonar.ping_cm(), 0, 10, 2, 20);
+
+  DynamicJsonDocument docOut(1024);
+  JsonArray bottleArray = docOut.to<JsonArray>();
+
+  bottleArray.add("register_bottle");
+
+  JsonObject param1 = bottleArray.createNestedObject();
+  param1["level"] = 2;
+  param1["points"] = 20;
+  param1["mac_address"] = String(WiFi.macAddress());
+
+  String output;
+  serializeJson(docOut, output);
+
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  USE_SERIAL.println(output);
+
+  socketIO.sendEVENT(output);
+
+  lastMidSonarReading = midSonar.ping_cm();
+  middleEventSent = true;
+}
+
+void highLevelBottle()
+{
+  USE_SERIAL.println(highSonar.ping_cm());
+  // handleBottle(highSonar.ping_cm(), 0, 12, 3, 25);
+
+  DynamicJsonDocument docOut(1024);
+  JsonArray bottleArray = docOut.to<JsonArray>();
+
+  bottleArray.add("register_bottle");
+
+  JsonObject param1 = bottleArray.createNestedObject();
+  param1["level"] = 3;
+  param1["points"] = 25;
+  param1["mac_address"] = String(WiFi.macAddress());
+
+  String output;
+  serializeJson(docOut, output);
+
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  USE_SERIAL.println(output);
+
+  socketIO.sendEVENT(output);
+
+  lastHighSonarReading = highSonar.ping_cm();
+  highEventSent = true;
+}

@@ -76,12 +76,13 @@ void setup()
   Serial.println(localIP);
 
   // server address, port and URL
-  socketIO.begin(localIP.toString(), 3333, "/socket.io/?EIO=4");
-  // socketIO.begin("10.122.177.50", 3333, "/socket.io/?EIO=4");
+  socketIO.begin(SOCKET_URL, 3333, "/socket.io/?EIO=4");
 
   // event handler
   socketIO.onEvent(socketIOEvent);
 }
+
+bool eventoEnviado = false;
 
 void loop()
 {
@@ -92,5 +93,12 @@ void loop()
     // sendEventName();
     // sendMacAddress();
     handleRecycling();
+    // delay(10);
+    // if (!eventoEnviado)
+    // {
+    //   sendGetLed();
+
+    //   eventoEnviado = true;
+    // }
   }
 }
