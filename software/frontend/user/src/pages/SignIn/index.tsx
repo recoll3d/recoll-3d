@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { api } from "../../services/api";
+import { Loading } from "../../components/Loading";
 
 import "./styles.css";
 
@@ -20,18 +21,24 @@ interface Profile {
 }
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
-  });
-
+  const [loaded, setLoaded] = useState(false);
   const [selectedProfiles, setSelectedProfiles] = useState<number[]>([]);
-
-  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
   const { signIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   whatsapp: "",
+  // });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoaded(true);
+    }, 3000);
+  }, []);
 
   async function handleSignIn(data: any) {
     const dataLogin = await signIn(data);
@@ -88,14 +95,23 @@ const SignIn = () => {
   //   // navigate('/');
   // }
 
+  function handleNavigateToHome(event: any) {
+    event.preventDefault();
+    navigate(-1);
+  }
+
+  if (!loaded) {
+    return <Loading />;
+  }
+
   return (
     <div id="page-signin">
-      <header>
+      <header role="header">
         <div>
           <img src={logo} alt="Recoll3D" />
         </div>
 
-        <Link to="/">
+        <Link to=".." onClick={handleNavigateToHome}>
           <FiArrowLeft />
           Voltar para home
         </Link>

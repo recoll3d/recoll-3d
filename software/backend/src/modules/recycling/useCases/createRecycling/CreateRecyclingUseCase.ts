@@ -14,6 +14,9 @@ export class CreateRecyclingUseCase {
     number_of_bottles,
     total_bottles_score,
   }: ICreateRecycling) {
+    console.log('CAIU AQUI')
+    console.log(mac_address);
+
     const collect_point = await prisma.collectionPoints.findFirst({
       where: {
         mac_address,

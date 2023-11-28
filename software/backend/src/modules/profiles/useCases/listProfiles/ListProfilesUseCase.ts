@@ -15,7 +15,7 @@ export class ListProfilesUseCase {
 
       return {
         ...rest,
-        image_url: `http://localhost:3333/uploads/${image}`
+        image_url: `${process.env.API_URL}/uploads/${image}`
       };
     });
 

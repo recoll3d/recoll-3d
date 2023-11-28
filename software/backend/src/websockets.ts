@@ -1,12 +1,15 @@
 // import { io } from './http';
 import { request, response } from 'express';
 import { Server } from 'socket.io';
-import { CallCreateBottle } from './modules/bottles/useCases/callCreateBottle';
-import cookie from 'cookie';
-import console from 'console';
+import Cookies from 'js-cookie';
+
+import { HandleCreateRecycling } from './services/handleCreateRecycling';
+import { HandleCreateBottle } from './services/handleCreateBottle';
+
+const handleCreateBottle = new HandleCreateBottle();
+const handleCreateRecycling = new HandleCreateRecycling();
 
 let connection: any = null;
-const callCreateBottle = new CallCreateBottle();
 
 export class Socket {
   socket: any;
@@ -16,28 +19,50 @@ export class Socket {
   }
   connect(server: any) {
     const io = new Server(server, {
-      cookie: {
-        name: 'token'
-      },
+      // cookie: {
+      //   name: 'token'
+      // },
+      // Deixar o cors definido, pelo fato do frontend não estar conseguindo se comunicar.
+      cors: {
+        origin: process.env.FRONTEND_URL,
+        // origin: 'http://localhost:3000',
+      }
+      // cors: {
+      //   origin: ['http://localhost:3000', 'http://192.168.43.233:3333/socket.io'],
+      //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      //   credentials: true,
+      //   optionsSuccessStatus: 204,
+      // }
     });
-    io.use((socket1, next) => {
-      // var cookief = socket1.handshake.headers.cookie;
-      let cookies = cookie.parse(String(socket1.request.headers.cookie));
-      // console.log(cookief);
-      console.log(cookies);
+    // io.use((socket1, next) => {
+    //   // var cookief = socket1.handshake.headers.cookie;
+    //   let cookies = cookie.parse(String(socket1.request.headers.cookie));
+    //   // console.log(cookief);
+    //   console.log(cookies);
 
-      next();
-    })
+    //   next();
+    // });
 
     io.on("connection", async (socket: any) => {
       console.log(socket.id);
       console.log('A client connected');
 
-      socket.emit("turn_on_led", { on: true });
-
       this.socket = socket;
 
-      await callCreateBottle.execute();
+      // socket.on('get_led', (data: any) => {
+      io.emit("turn_on_led", { on: true });
+
+      // });
+      console.log("Cookies:")
+      console.log(Cookies.get('token'));
+
+      socket.on("register_recycling", async (data: any) => {
+        await handleCreateRecycling.execute(data);
+      });
+
+      socket.on("register_bottle", async (data: any) => {
+        await handleCreateBottle.execute(data);
+      });
 
     });
 
@@ -48,6 +73,9 @@ export class Socket {
   }
   on(event: any, data: any) {
     this.socket.on(event, data);
+  }
+  join(room_name: any) {
+    this.socket.join(room_name)
   }
   static init(server: any) {
     if (!connection) {

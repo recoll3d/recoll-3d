@@ -8,27 +8,37 @@ interface IPromiseData {
   total_bottles_score: number;
 }
 
-const promiseData = () => new Promise((resolve, reject) => {
-  socket.on('register_recycling', (data: IPromiseData) => {
-    // console.log(data);
-    resolve(data);
-  });
-});
+// const promiseData = () => new Promise((resolve, reject) => {
+//   socket.on('initial_recycling_data', (data: IPromiseData) => {
+//     console.log(data);
+//     resolve(data);
+//   });
+// });
 
 export class CreateRecyclingController {
   async handle(request: Request, response: Response) {
+    // const {
+    //   mac_address,
+    //   number_of_bottles,
+    //   total_bottles_score,
+    // } = await promiseData()
+    //   .catch(() => {
+    //     response
+    //       .status(404)
+    //       .json({ message: "Board not found" })
+    //   }) as IPromiseData;
+
     const {
       mac_address,
       number_of_bottles,
       total_bottles_score,
-    } = await promiseData()
-      .catch(() => {
-        response
-          .status(404)
-          .json({ message: "Board not found" })
-      }) as IPromiseData;
+    } = request.body;
+
+    console.log("DADOS AQUI:");
+    console.log(mac_address);
 
     const { user_id } = request;
+    // const { user_id } = request.params;
 
     const createRecyclingUseCase = new CreateRecyclingUseCase();
     const result = await createRecyclingUseCase.execute({

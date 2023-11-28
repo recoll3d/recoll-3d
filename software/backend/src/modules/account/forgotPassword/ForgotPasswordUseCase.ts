@@ -57,7 +57,7 @@ export class ForgotPasswordUseCase {
       }
     });
 
-    const resetLink = `http://localhost:3000/reset-password?${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?${resetToken}`;
 
     const resend = new Resend(env.RESEND_KEY);
 

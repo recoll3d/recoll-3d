@@ -1,7 +1,3 @@
-#page-signup body {
-  background: tomato;
-}
-
 #page-signup {
   width: 100%;
   max-width: 1100px;
@@ -10,7 +6,7 @@
 }
 
 #page-signup header {
-  margin-top: 48px;
+  /* margin-top: 48px; */
 
   display: flex;
   justify-content: space-between;
@@ -33,7 +29,9 @@
 
 #page-signup form {
   margin: 80px auto;
-  padding: 0 64px 64px 64px;
+  /* padding: 0 64px 64px 64px; */
+  /* padding: 64px; */
+  padding: 4rem;
   max-width: 730px;
   background: #FFF;
   border-radius: 8px;
@@ -52,6 +50,10 @@
   border: 0;
 }
 
+#page-signup header[role="header"] {
+  margin-top: 48px;
+}
+
 #page-signup form header[role="legend"] {
   width: 100%;
   display: flex;
@@ -61,7 +63,8 @@
 }
 
 #page-signup form header[role="title"] h2 {
-  font-size: 34px;
+  /* font-size: 34px; */
+  font-size: var(--h2-font-size);
 }
 
 #page-signup form header[role="legend"] h2 {
@@ -89,7 +92,7 @@
 
 #page-signup form .field input[type=text],
 #page-signup form .field input[type=email],
-#page-signup form .field input[type=number] {
+#page-signup form .field input[type=password] {
   flex: 1;
   background: #F0F0F5;
   border-radius: 8px;
@@ -204,10 +207,13 @@
 .profiles-grid li span {
   flex: 1;
   margin-top: 12px;
-
+  
   display: flex;
   align-items: center;
-  color: var(--title-color)
+
+  color: var(--title-color);
+  font-size: var(--h4-font-size);
+  font-weight: 700;
 }
 
 .profiles-grid li.selected {

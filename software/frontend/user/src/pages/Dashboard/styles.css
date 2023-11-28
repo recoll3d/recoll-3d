@@ -24,7 +24,8 @@
 }
 
 #page-dashboard .content .icon {
-  font-size: var(--h2-font-size);
+  /* font-size: var(--h2-font-size); */
+  font-size: var(--h3-font-size);
   cursor: pointer;
 }
 

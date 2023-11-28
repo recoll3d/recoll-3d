@@ -6,6 +6,7 @@ interface IProfile {
 
 export class FindUserUseCase {
   async execute(user_id: string) {
+    // console.log("Usuário id: ", user_id);
     if (!user_id) {
       return {};
     }
@@ -71,7 +72,7 @@ export class FindUserUseCase {
       ...user,
       profile: {
         ...restProfile,
-        image_url: `http://localhost:3333/uploads/${image}`
+        image_url: `${process.env.API_URL}/uploads/${image}`
       }
     }
 

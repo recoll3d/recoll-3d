@@ -59,6 +59,15 @@ export function AuthProvider({ children }: AuthProviderType) {
     const token = Cookies.get("reactauth.token");
 
     if (token) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    const token = Cookies.get("reactauth.token");
+    // const user_id = Cookies.get("reactauth.user_id");
+
+    if (token) {
       api
         .get(`/users/${token}`, {
           // params: token,
@@ -85,7 +94,11 @@ export function AuthProvider({ children }: AuthProviderType) {
         expires: 1,
       });
 
-      api.defaults.headers["Authorization"] = `Bearer ${data.token}`;
+      // Cookies.set("reactauth.user_id", String(data.user_id), {
+      //   expires: 1,
+      // });
+
+      // api.defaults.headers["Authorization"] = `Bearer ${data.token}`;
 
       api
         .get(`/users/${data.token}`, {
@@ -101,6 +114,7 @@ export function AuthProvider({ children }: AuthProviderType) {
             state: {
               user: response.data,
             },
+            replace: true,
           });
         });
     } catch (err) {

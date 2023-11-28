@@ -13,10 +13,14 @@
   --grey-text: rgb(190, 190, 190);
   --input-color: hsl(330, 12%, 97%);
 
-  --biggest-font-size: 2.5rem;
-  --h1-font-size: 1.5rem;
-  --h2-font-size: 1.25rem;
-  --h3-font-size: 1rem;
+  // --biggest-font-size: 2.5rem;
+  --biggest-font-size: 3.5rem;
+  // --h1-font-size: 1.5rem;
+  --h1-font-size: 2.5rem;
+  // --h2-font-size: 1.25rem;
+  --h2-font-size: 2rem;
+  // --h3-font-size: 1rem;
+  --h3-font-size: 1.5rem;
   --normal-font-size: .938rem;
   --small-font-size: .813rem;
   --smallest-font-size: .75rem;
@@ -28,7 +32,8 @@
 
     .title {
       h1 {
-        font-size: var(--h1-font-size);
+        // font-size: var(--h1-font-size);
+        font-size: var(--h3-font-size);
         color: var(--black-color);
         font-weight: 700;
       }
@@ -41,7 +46,8 @@
     }
 
     .search-bar {
-      padding: 1rem 2rem;
+      // padding: .5rem 2rem;
+      padding: .5rem 1rem;
       background: var(--white-color);
       border-radius: 5px;
       gap: 1rem;
@@ -65,10 +71,11 @@
       gap: 1rem;
 
       .user-icon {
-        font-size: var(--biggest-font-size);
+        // font-size: var(--biggest-font-size);
+        font-size: var(--h1-font-size);
         background: var(--white-color);
         border-radius: 5px;
-        padding: 8px;
+        padding: .5rem;
         box-shadow: 0 2px 4px var(--input-color);
         color: var(--text-color);
       }
@@ -89,4 +96,76 @@
     }
   }
 
+  .cards-section {
+    margin-top: 3rem;
+    gap: 1rem;
+
+    .left-card {
+      position: relative;
+      flex-basis: 70%;
+      // height: 200px;
+      height: 250px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 1rem;
+      overflow: hidden;
+
+      .image-container {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      h1, p, .button {
+        z-index: 100;
+      }
+
+      h1 {
+        font-size: var(--h1-font-size);
+        color: var(--white-color);
+        font-weight: 800;
+      }
+
+      p {
+        padding: 1rem;
+        color: var(--pale-green);
+        font-weight: 500;
+      }
+
+      .button-container {
+        gap: 1rem;
+
+        .button {
+          box-shadow: none;
+          padding: .8rem 1.5rem;
+          color: var(--primary-color);
+          border: 2px solid transparent;
+        }
+
+        .transparent {
+          background: none;
+          border: 2px solid var(--pale-green);
+          color: var(--pale-green);
+
+          &:hover {
+            background: var(--pale-green);
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
 }

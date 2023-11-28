@@ -22,16 +22,16 @@ export const Sidebar = () => {
 
     if (token) {
       api
-        .post("/disconnect", {
+        .post("/disconnect", null, {
           // params: token,
           headers: {
-            Authorization: `Barear ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then(({ data }) => {
           Cookies.remove("reactauth.token");
 
-          navigate("/");
+          navigate("/", { replace: true });
         })
         .catch((err) => {
           window.alert("Ops!!! Tivemos um problema.");

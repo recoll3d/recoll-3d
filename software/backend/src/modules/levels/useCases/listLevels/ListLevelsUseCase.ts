@@ -9,7 +9,7 @@ export class ListLevelsUseCase {
 
       return {
         ...rest,
-        image_url: `http://localhost:3000/uploads/${image}`
+        image_url: `${process.env.FRONTEND_URL}/uploads/${image}`
       };
     });
 

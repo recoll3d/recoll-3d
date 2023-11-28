@@ -11,6 +11,7 @@ model Users {
   id             String          @id @default(uuid())
   profile_id     String
   level_id       String?
+  image          String?
   name           String
   username       String          @unique
   email          String          @unique

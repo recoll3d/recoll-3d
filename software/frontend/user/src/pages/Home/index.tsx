@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -10,13 +10,13 @@ import logo from "../../assets/logo.svg";
 const Home = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = Cookies.get("reactauth.token");
+  // useEffect(() => {
+  //   const token = Cookies.get("reactauth.token");
 
-    if (token) {
-      navigate("/dashboard");
-    }
-  });
+  //   if (token) {
+  //     navigate("/dashboard", { replace: true });
+  //   }
+  // }, []);
 
   return (
     <div id="page-home">

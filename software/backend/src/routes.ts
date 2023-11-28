@@ -18,6 +18,7 @@ import { ListLevelsController } from './modules/levels/useCases/listLevels/ListL
 
 import { FindUserController } from './modules/users/useCases/findUser/FindUserController';
 import { BottleDetailsController } from './modules/bottles/useCases/bottleDetails/BottleDetailsController';
+import { RecyclingDetailsController } from './modules/recycling/useCases/recyclingDetails/RecyclingDetailsController';
 
 import { ensureAuthenticateUser } from './middlewares/ensureAuthenticateUser';
 import { AuthenticateUserController } from './modules/account/authenticateUser/AuthenticateUserController';
@@ -50,6 +51,7 @@ const listLevelsController = new ListLevelsController();
 
 const findUserController = new FindUserController();
 const bottleDetailsController = new BottleDetailsController();
+const recyclingDetailsController = new RecyclingDetailsController();
 
 routes.post("/authenticate/", authenticateUserController.handle);
 routes.post("/disconnect/", ensureAuthenticateUser, disconnectUserController.handle);
@@ -77,6 +79,7 @@ routes.get("/levels", listLevelsController.handle);
 // routes.get("/users/:id", ensureAuthenticateUser, findUserController.handle);
 routes.get("/users/:token", ensureAuthenticateUser, findUserController.handle);
 routes.get("/bottles/", bottleDetailsController.handle);
+routes.get("/recycling/:id", ensureAuthenticateUser, recyclingDetailsController.handle);
 
 routes.put(
   "/recycling/update-end-date/:id",

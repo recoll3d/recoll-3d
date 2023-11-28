@@ -1,0 +1,27 @@
+:root {
+  --primary-color: #05F283;
+  --title-color: #0B1C26;
+  --text-color: #6C6C80;
+  /* Adicionei Recentemente (15/11/2023) */
+  --hover-color: #BDF094;
+  --pale-green: hsl(96, 75%, 89%);
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 18%);
+  --text-color: hsl(240, 1%, 48%);
+  /* --background-color: hsl(220, 10%, 94%); */
+  --background-color: #F0F0F5;
+  --grey-text: rgb(190, 190, 190);
+  --input-color: hsl(330, 12%, 97%);
+
+  // --biggest-font-size: 2.5rem;
+  --biggest-font-size: 3.5rem;
+  // --h1-font-size: 1.5rem;
+  --h1-font-size: 2.5rem;
+  // --h2-font-size: 1.25rem;
+  --h2-font-size: 2rem;
+  --h3-font-size: 1.5rem;
+  --h4-font-size: 1.15rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smallest-font-size: .75rem;
+}
