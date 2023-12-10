@@ -19,6 +19,8 @@ bool lowEventSent = false;
 bool middleEventSent = false;
 bool highEventSent = false;
 
+bool eventSent = false;
+
 const int MARGIN_OF_TOLERANCE = 0;
 
 void socketIOEvent(socketIOmessageType_t type, uint8_t *payload, size_t length)
@@ -212,57 +214,76 @@ void handleRecycling()
 
   socketIO.sendEVENT(output);
 
-  // int lowMotionSensor = digitalRead(LOW_MOTION_SENSOR);
-  // int midMotionSensor = digitalRead(MID_MOTION_SENSOR);
-  // int highMotionSensor = digitalRead(HIGH_MOTION_SENSOR);
+  int lowMotionSensor = digitalRead(LOW_MOTION_SENSOR);
+  int midMotionSensor = digitalRead(MID_MOTION_SENSOR);
+  int highMotionSensor = digitalRead(HIGH_MOTION_SENSOR);
 
   // =========== ÚLTIMOS QUE FORAM UTILIZADOS ===========:
   // USE_SERIAL.println('SENSOR MÉDIO:');
   // USE_SERIAL.println(midSonar.ping_cm());
 
-  if (lowSonar.ping_cm() < 8 && fabs(lowSonar.ping_cm() - lastLowSonarReading) > MARGIN_OF_TOLERANCE && !lowEventSent)
+  // if (lowSonar.ping_cm() < 8 && fabs(lowSonar.ping_cm() - lastLowSonarReading) > MARGIN_OF_TOLERANCE && !lowEventSent)
+  // {
+  //   lowLevelBottle();
+  // }
+  // else if (lowSonar.ping_cm() >= 8)
+  // {
+  //   lowEventSent = false;
+  // }
+
+  // if (midSonar.ping_cm() < 12 && fabs(midSonar.ping_cm() - lastMidSonarReading) > MARGIN_OF_TOLERANCE && !middleEventSent)
+  // {
+  //   middleLevelBottle();
+  // }
+  // else if (midSonar.ping_cm() >= 12)
+  // {
+  //   middleEventSent = false;
+  // }
+
+  // if (highSonar.ping_cm() < 12 && fabs(highSonar.ping_cm() - lastHighSonarReading) > MARGIN_OF_TOLERANCE && !highEventSent)
+  // {
+  //   highLevelBottle();
+  // }
+  // else if (highSonar.ping_cm() >= 12)
+  // {
+  //   highEventSent = false;
+  // }
+  // ====================================================;
+
+  // bool bottleDetected = motionSensor == 1 && !eventSent;
+
+  if (lowMotionSensor == 1 && !lowEventSent)
   {
-    lowLevelBottle();
+    handleBottle2(lowMotionSensor, 1, 15);
+    lowEventSent = true;
   }
-  else if (lowSonar.ping_cm() >= 8)
+  else if (lowMotionSensor == 0)
   {
     lowEventSent = false;
   }
 
-  if (midSonar.ping_cm() < 12 && fabs(midSonar.ping_cm() - lastMidSonarReading) > MARGIN_OF_TOLERANCE && !middleEventSent)
+  if (midMotionSensor == 1 && !middleEventSent)
   {
-    middleLevelBottle();
+    handleBottle2(midMotionSensor, 2, 20);
+    middleEventSent = true;
   }
-  else if (midSonar.ping_cm() >= 12)
+  else if (midMotionSensor == 0)
   {
     middleEventSent = false;
   }
 
-  if (highSonar.ping_cm() < 12 && fabs(highSonar.ping_cm() - lastHighSonarReading) > MARGIN_OF_TOLERANCE && !highEventSent)
+  if (highMotionSensor == 1 && !highEventSent)
   {
-    highLevelBottle();
+    handleBottle2(highMotionSensor, 3, 25);
+    highEventSent = true;
   }
-  else if (highSonar.ping_cm() >= 12)
+  else if (highMotionSensor == 0)
   {
     highEventSent = false;
   }
-  // ====================================================;
-
-  // handleBottle2(LOW_MOTION_SENSOR, 1, 15);
 
   delay(50);
 }
-// if (lowMotionSensor && !midMotionSensor && !highMotionSensor)
-// {
-// }
-// if (midMotionSensor && !lowMotionSensor && !highMotionSensor)
-// {
-//   return handleBottle(MID_MOTION_SENSOR, 2, 20);
-// }
-// if (highMotionSensor && !lowMotionSensor && !midMotionSensor)
-// {
-//   return handleBottle(HIGH_MOTION_SENSOR, 3, 25);
-// }
 
 // bool bottleDetected = digitalRead(LOW_START_KEY) == 1 && digitalRead(LOW_END_KEY) == 1 && !eventoEnviado;
 
@@ -302,38 +323,27 @@ void handleRecycling()
 // }
 // }
 
-// void handleBottle2(int motionSensor, int level, int points)
-// {
-//   bool bottleDetected = digitalRead(motionSensor) == 1 && !eventSent;
+void handleBottle2(int motionSensor, int level, int points)
+{
+  DynamicJsonDocument docOut(1024);
+  JsonArray array = docOut.to<JsonArray>();
 
-//   if (bottleDetected)
-//   {
-//     DynamicJsonDocument docOut(1024);
-//     JsonArray array = docOut.to<JsonArray>();
+  array.add("register_bottle");
 
-//     array.add("register_bottle");
+  JsonObject param1 = array.createNestedObject();
+  param1["level"] = level;
+  param1["points"] = points;
+  param1["mac_address"] = String(WiFi.macAddress());
 
-//     JsonObject param1 = array.createNestedObject();
-//     param1["level"] = level;
-//     param1["points"] = points;
-//     param1["mac_address"] = String(WiFi.macAddress());
+  String output;
+  serializeJson(docOut, output);
 
-//     String output;
-//     serializeJson(docOut, output);
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  // USE_SERIAL.println("Você ganhou %d pontos\n", points);
+  USE_SERIAL.println(output);
 
-//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
-//     // USE_SERIAL.println("Você ganhou %d pontos\n", points);
-//     USE_SERIAL.println(output);
-
-//     socketIO.sendEVENT(output);
-
-//     eventSent = true;
-//   }
-//   else if (digitalRead(motionSensor) == 0)
-//   {
-//     eventSent = false;
-//   }
-// }
+  socketIO.sendEVENT(output);
+}
 
 // ========================= ÚLTIMOS QUE FORAM UTILIZADOS =========================:
 // void handleBottle(int sensor, int minLimit, int maxLimit, int level, int points)
