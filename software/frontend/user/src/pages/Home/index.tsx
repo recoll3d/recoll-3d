@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 import "./styles.css";
 
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo-name.svg";
 
 const Home = () => {
   const navigate = useNavigate();

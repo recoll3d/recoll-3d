@@ -115,7 +115,7 @@ export class HandleCreateRecycling {
             console.log('DADOS DA REQUISIÇÃO:')
             console.log(data)
 
-            socket.emit('recycling_log_response', {
+            io.to("reactjs").emit('recycling_log_response', {
               id: data.id,
             });
           })

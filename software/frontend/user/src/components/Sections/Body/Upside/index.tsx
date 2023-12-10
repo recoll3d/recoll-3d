@@ -13,7 +13,8 @@ import "./styles.css";
 import "./styles.scss";
 
 import bottleImg from "../../../../assets/bottle-in-grass.jpg";
-import lampImg from "../../../../assets/ecological-lamp.jpg";
+// import lampImg from "../../../../assets/ecological-lamp.jpg";
+import journeyAmicoImg from "../../../../assets/journey-amico.svg";
 
 type IUser = {
   id: string;
@@ -256,16 +257,19 @@ export const Upside: React.FC<{ user: IUser }> = ({ user }) => {
     <div className="upside">
       <div className="header-section flex">
         <div className="title">
-          <h1>Bem vindo à Recoll3D</h1>
+          {/* <h1>Bem vindo à Recoll3D</h1> */}
+          <h1>Bem vindo!</h1>
           <p>Olá {user.name}, bem vindo de volta!</p>
         </div>
 
-        <div className="search-bar flex">
+        {/* <div className="search-bar flex"> */}
+        <div className="search-bar">
           <input type="text" placeholder="Pesquisar" />
           <BiSearchAlt className="icon" />
         </div>
 
-        <div className="user flex">
+        {/* <div className="user flex"> */}
+        <div className="user">
           <TbMessageCircle className="user-icon" />
           <MdOutlineNotificationsNone className="user-icon" />
 
@@ -276,20 +280,17 @@ export const Upside: React.FC<{ user: IUser }> = ({ user }) => {
       </div>
 
       <div className="cards-section flex">
-        <div className="left-card flex">
-          <h1>Create and sell extraordinary products</h1>
-          {/* <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-            blanditiis nulla libero, est consequuntur enim dolorem optio
-            inventore necessitatibus temporibus praesentium eveniet ea ducimus
-            fugit id ab aliquam. Dignissimos, sunt!
-          </p> */}
+        <div className="left-card">
+          <h1>Recicle e receba brindes extraordinários</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
           <div className="button-container flex">
             <button className="button" onClick={handleOpenModal}>
               Reciclar mais
             </button>
-            <button className="button transparent">Top Sellers</button>
+            <button className="button transparent">
+              Brindes mais recebidos
+            </button>
           </div>
 
           <div className="image-container">
@@ -298,27 +299,30 @@ export const Upside: React.FC<{ user: IUser }> = ({ user }) => {
         </div>
 
         <div className="right-card flex">
-          <div className="main flex">
+          {/* <div className="main flex"> */}
+          <div className="main">
             <div className="text-container">
-              <h1>My Stat</h1>
+              <h1>Meu Status</h1>
 
               <div className="flex">
                 <span>
-                  Today <br /> <small>4 Orders</small>
+                  Hoje <br /> <small>4 Reciclagens</small>
                 </span>
 
                 <span>
-                  This Month <br /> <small>127 Orders</small>
+                  Este Mês <br /> <small>127 Reciclagens</small>
                 </span>
               </div>
 
               <span className="flex link">
-                Go to my orders <BsArrowRightShort className="" />
+                Ir para minhas reciclagens{" "}
+                <BsArrowRightShort className="right-icon" />
               </span>
             </div>
 
             <div className="image-container">
-              <img src={lampImg} alt="Lâmpada Ecológica" />
+              {/* <img src={lampImg} alt="Lâmpada Ecológica" /> */}
+              <img src={journeyAmicoImg} alt="Journey Amico" />
             </div>
           </div>
         </div>

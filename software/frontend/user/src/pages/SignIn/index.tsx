@@ -9,7 +9,7 @@ import { Loading } from "../../components/Loading";
 
 import "./styles.css";
 
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo-name.svg";
 
 // array ou objeto: manualmente informar o tipo da variavel
 

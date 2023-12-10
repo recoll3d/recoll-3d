@@ -171,8 +171,8 @@
   // "terminal.integrated.fontFamily": "monospace",
   "terminal.integrated.fontFamily": "monospace",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.addMissingImports": true
+    "source.fixAll.eslint": "explicit",
+    "source.addMissingImports": "explicit"
   },
   "eslint.validate": [
     "javascript",

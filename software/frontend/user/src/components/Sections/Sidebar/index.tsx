@@ -12,6 +12,8 @@ import "./styles.css";
 import "./styles.scss";
 
 import logo from "../../../assets/logo.svg";
+import logoName from "../../../assets/logo-name.svg";
+
 import { api } from "../../../services/api";
 
 export const Sidebar = () => {
@@ -43,11 +45,13 @@ export const Sidebar = () => {
   return (
     <div className="side-bar grid">
       <div className="logo flex">
-        <img src={logo} alt="Recoll3D" />
+        <img className="primary-logo" src={logoName} alt="Recoll 3D" />
+        <img className="secondary-logo" src={logo} alt="Recoll 3D" />
       </div>
 
       <div className="menu">
-        <h3 className="title">Menu Principal</h3>
+        {/* <h3 className="title">Menu Principal</h3> */}
+        <h3 className="title">Lista Principal</h3>
 
         <ul className="lists grid">
           <li className="list-item">
@@ -105,12 +109,8 @@ export const Sidebar = () => {
               <span className="small-text">Sistema</span>
             </a>
           </li>
-        </ul>
-      </div>
 
-      <div className="logout">
-        <ul className="lists grid">
-          <li className="list-item">
+          <li className="list-item logout">
             <Link to="#" onClick={handleLogout} className="link flex">
               <FiLogOut className="icon" />
               <span className="small-text">Sair</span>
@@ -118,6 +118,10 @@ export const Sidebar = () => {
           </li>
         </ul>
       </div>
+
+      {/* <div className="logout">
+        <ul className="lists grid"></ul>
+      </div> */}
     </div>
   );
 };

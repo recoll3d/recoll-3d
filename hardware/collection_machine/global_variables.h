@@ -8,7 +8,9 @@
 
 // // #define HIGH_START_KEY 13
 // Últimos que foram utilizados:
-// #define LOW_MOTION_SENSOR 12
+#define LOW_MOTION_SENSOR 14
+#define MID_MOTION_SENSOR 25
+#define HIGH_MOTION_SENSOR 35
 // =============================
 
 // Últimos que foram utilizados:

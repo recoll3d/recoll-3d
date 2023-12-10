@@ -13,9 +13,9 @@ void handleRecycling();
 
 // void handleBottle(int motionSensor, int limit, int level, int points);
 // void handleBottle(int sensor, int minLimit, int maxLimit, int level, int points);
-// void handleBottle2(int motionSensor, int level, int points);
-void lowLevelBottle();
-void middleLevelBottle();
-void highLevelBottle();
+void handleBottle2(int motionSensor, int level, int points);
+// void lowLevelBottle();
+// void middleLevelBottle();
+// void highLevelBottle();
 
 #endif

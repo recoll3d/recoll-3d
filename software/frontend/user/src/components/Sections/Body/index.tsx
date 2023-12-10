@@ -10,9 +10,10 @@ export const Body = ({ user }: any) => {
     <div className="main-content">
       <Upside user={user} />
 
-      <div className="bottom flex">
-        <Activity />
+      {/* <div className="bottom flex"> */}
+      <div className="bottom">
         <Listing />
+        <Activity />
       </div>
     </div>
   );

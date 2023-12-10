@@ -41,7 +41,7 @@ export class HandleCreateBottle {
       const bottle = await api.post("/recycling/bottles/", bottleData);
 
       console.log(bottle.data);
-      socket.emit("recycled_bottle", {
+      io.to("reactjs").emit("recycled_bottle", {
         recycling_id: bottle.data.recycling_id,
         level: bottle.data.level,
         points: bottle.data.points,

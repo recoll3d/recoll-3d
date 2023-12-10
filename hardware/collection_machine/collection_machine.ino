@@ -7,7 +7,6 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WiFiClientSecure.h>
-
 #include <WebSocketsClient.h>
 
 WiFiMulti WiFiMulti;
@@ -53,11 +52,10 @@ void setup()
     delay(100);
   }
 
-  String ip = WiFi.localIP().toString();
-  USE_SERIAL.printf("[SETUP] WiFi Connected %s\n", ip.c_str());
-
   // Obter o endereço IPv4
-  IPAddress localIP = WiFi.localIP();
+  String localIP = WiFi.localIP().toString();
+  // String ip = WiFi.localIP().toString();
+  USE_SERIAL.printf("[SETUP] WiFi Connected %s\n", localIP.c_str());
 
   if (localIP[3] >= 100)
   {
@@ -77,6 +75,7 @@ void setup()
 
   // server address, port and URL
   socketIO.begin(SOCKET_URL, 3333, "/socket.io/?EIO=4");
+  // socketIO.begin(localIP, 3333, "/socket.io/?EIO=4");
 
   // event handler
   socketIO.onEvent(socketIOEvent);

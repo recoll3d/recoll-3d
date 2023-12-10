@@ -1,0 +1,121 @@
+:root {
+  --primary-color: #05F283;
+  --title-color: #0B1C26;
+  --text-color: #6C6C80;
+  /* Adicionei Recentemente (15/11/2023) */
+  --hover-color: #BDF094;
+  // --pale-green: hsl(96, 75%, 89%);
+  --green-wave-light: rgba(5, 242, 131, .1);
+  --green-wave-regular: rgba(5, 242, 131, .3);
+  --green-wave-medium: rgba(5, 242, 131, .5);
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 18%);
+  --text-color: hsl(240, 1%, 48%);
+  /* --background-color: hsl(220, 10%, 94%); */
+  --background-color: #F0F0F5;
+  --grey-text: rgb(190, 190, 190);
+  --input-color: hsl(330, 12%, 97%);
+  --item-card-color: hsl(120, 5%, 88%);
+  --item-card-hover: hsl(120, 27%, 87%);
+
+  // --biggest-font-size: 2.5rem;
+  --biggest-font-size: 3.5rem;
+  // --h1-font-size: 1.5rem;
+  --h1-font-size: 2.5rem;
+  // --h2-font-size: 1.25rem;
+  --h2-font-size: 2rem;
+  --h3-font-size: 1.5rem;
+  --h4-font-size: 1.15rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smallest-font-size: .75rem;
+}
+
+.listing {
+  flex-basis: 70%;
+
+  .heading {
+    display: flex;
+    align-items: center;
+    
+    width: 100%;
+    justify-content: space-between;
+
+    h1 {
+      // font-size: var(--h2-font-size);
+      font-size: var(--h4-font-size);
+      color: var(--black-color);
+      font-weight: 700;
+    }
+
+    .button {
+      border: 1px solid transparent;
+      font-size: var(--normal-font-size);
+      font-weight: 500;
+    }
+    
+    .button:hover {
+      border: 1px solid var(--primary-color);
+    }
+  }
+
+  .listing-content {
+    width: 100%;
+    margin: 1rem 0;
+    // gap: 1rem;
+    gap: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .single-item {
+      position: relative;
+      width: 150px;
+      // height: 170px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      // padding: 1rem;
+      border-radius: 10px;
+      background: var(--item-card-color);
+      overflow: hidden;
+
+      &:hover {
+        background: var(--item-card-hover);
+        box-shadow: 0 2px 2px var(--input-color);
+      }
+
+      img {
+        // max-width: 100px;
+        max-height: 9.3rem;
+        width: 100%;
+        object-fit: contain;
+        // display: inline-block;
+      }
+
+      .icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: var(--primary-color);
+      }
+
+      h3 {
+        font-size: var(--normal-font-size);
+        font-weight: 600;
+        color: var(--black-color);
+        padding: 1rem 0;
+      }
+    }
+  }
+}
+
+// MEDIA QUERIES ==================>
+@media screen and (max-width: 918px) {
+  .listing-content {
+    .single-item {
+      width: 200px !important;
+    }
+  }
+}

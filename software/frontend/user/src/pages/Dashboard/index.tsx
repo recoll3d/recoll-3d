@@ -10,6 +10,7 @@ import { Body } from "../../components/Sections/Body";
 import { Loading } from "../../components/Loading";
 
 import "./styles.css";
+import "./styles.scss";
 
 const Dashboard = () => {
   const [recyclingScore, setRecyclingScore] = useState(0);
