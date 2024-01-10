@@ -20,7 +20,13 @@ interface Profile {
   id: number;
   name: string;
   description: string;
-  image_url: string;
+  image: {
+    id: string;
+    name: string;
+    size: number;
+    key: string;
+    url: string;
+  };
 }
 
 const Signup = () => {
@@ -184,7 +190,7 @@ const Signup = () => {
                   selectedProfiles.includes(profile.id) ? "selected" : ""
                 }
               >
-                <img src={profile.image_url} alt={profile.name} />
+                <img src={profile.image.url} alt={profile.name} />
                 <span>{profile.name}</span>
               </li>
             ))}
