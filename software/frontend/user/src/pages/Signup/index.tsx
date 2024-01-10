@@ -49,12 +49,12 @@ const Signup = () => {
   useEffect(() => {
     api
       .get("/profiles")
-      .then((response) => {
+      .then((response: any) => {
         setTimeout(() => {
           setProfiles(response.data);
         }, 2000);
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         setProfiles([]);
         console.log(err);
       });
