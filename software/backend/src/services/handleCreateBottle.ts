@@ -30,8 +30,6 @@ export class HandleCreateBottle {
         points: data.points,
       };
 
-      // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTk3ODEyNTEsImV4cCI6MTY5OTg2NzY1MSwic3ViIjoiN2NkYzFkMGUtNTM0My00NmE3LTk1ZWEtOTg2YzlmMGMyNTk3In0.MZa6xc6pjBbnHtHhID4RS5g0EwkdlsEvTovG-XWv8wo';
-
       // const config = {
       //   headers: {
       //     Authorization: `Bearer ${token}`
